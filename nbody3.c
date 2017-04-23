@@ -128,7 +128,7 @@ int main(const int argc, const char** argv) {
   printf("Initial center of mass: (%g, %g, %g)\n", comx, comy, comz);
 
   // Perform benchmark
-  printf("\n\033[1mNBODY Version 02\033[0m\n");
+  printf("\n\033[1mNBODY Version 03\033[0m\n");
   printf("\nPropagating %d bodies using %d thread on %s...\n\n", nBodies, numThreads, "CPU");
 
   double rate = 0, dRate = 0; // Benchmarking data
