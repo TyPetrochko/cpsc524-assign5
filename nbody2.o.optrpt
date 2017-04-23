@@ -21,6 +21,7 @@ INLINE REPORT: (main(int, const char **)) [1] nbody2.c(85,45)
      {{ Inlining of routines from system headers is omitted. Use -qopt-report=3 to view full report. }}
   -> INLINE: (123,29) computeCom(int, BodyType *)
   -> INLINE: (142,5) MoveBodies(int, BodyType *, float)
+  -> INLINE: (181,29) computeCom(int, BodyType *)
 
 
     Report from: OpenMP optimizations [openmp]
@@ -29,6 +30,8 @@ OpenMP Construct at nbody2.c(20,3) inlined into nbody2.c(123,29)
    remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
 OpenMP Construct at nbody2.c(45,3) inlined into nbody2.c(142,5)
    remark #16201: OpenMP DEFINED REGION WAS PARALLELIZED
+OpenMP Construct at nbody2.c(20,3) inlined into nbody2.c(181,29)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
 
     Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
 
@@ -53,14 +56,6 @@ LOOP BEGIN at nbody2.c(139,3)
    LOOP END
 LOOP END
 
-LOOP BEGIN at nbody2.c(172,3)
-   remark #15300: LOOP WAS VECTORIZED
-LOOP END
-
-LOOP BEGIN at nbody2.c(172,3)
-<Remainder>
-LOOP END
-
 LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(123,29)
    remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(22,5) ]
    remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(23,5) ]
@@ -72,20 +67,41 @@ LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(123,29)
 <Remainder>
 LOOP END
 
-LOOP BEGIN at nbody2.c(47,5) inlined into nbody2.c(142,5)
+LOOP BEGIN at nbody2.c(48,5) inlined into nbody2.c(142,5)
+   remark #25461: Imperfect Loop Unroll-Jammed by 2   (pre-vector) 
    remark #15542: loop was not vectorized: inner loop was already vectorized
 
-   LOOP BEGIN at nbody2.c(48,5) inlined into nbody2.c(142,5)
-      remark #15542: loop was not vectorized: inner loop was already vectorized
-
-      LOOP BEGIN at nbody2.c(54,7) inlined into nbody2.c(142,5)
-         remark #15300: LOOP WAS VECTORIZED
-      LOOP END
-
-      LOOP BEGIN at nbody2.c(54,7) inlined into nbody2.c(142,5)
-      <Remainder>
-      LOOP END
+   LOOP BEGIN at nbody2.c(54,7) inlined into nbody2.c(142,5)
+      remark #15300: LOOP WAS VECTORIZED
    LOOP END
+
+   LOOP BEGIN at nbody2.c(54,7) inlined into nbody2.c(142,5)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody2.c(48,5) inlined into nbody2.c(142,5)
+<Remainder>
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody2.c(54,7) inlined into nbody2.c(142,5)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody2.c(54,7) inlined into nbody2.c(142,5)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(181,29)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(22,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(23,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(24,5) ]
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(181,29)
+<Remainder>
 LOOP END
 ===========================================================================
 
@@ -142,19 +158,29 @@ LOOP BEGIN at nbody2.c(78,3)
    LOOP END
 LOOP END
 
-LOOP BEGIN at nbody2.c(47,5)
+LOOP BEGIN at nbody2.c(48,5)
+   remark #25461: Imperfect Loop Unroll-Jammed by 2   (pre-vector) 
    remark #15542: loop was not vectorized: inner loop was already vectorized
 
-   LOOP BEGIN at nbody2.c(48,5)
-      remark #15542: loop was not vectorized: inner loop was already vectorized
+   LOOP BEGIN at nbody2.c(54,7)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
 
-      LOOP BEGIN at nbody2.c(54,7)
-         remark #15300: LOOP WAS VECTORIZED
-      LOOP END
+   LOOP BEGIN at nbody2.c(54,7)
+   <Remainder>
+   LOOP END
+LOOP END
 
-      LOOP BEGIN at nbody2.c(54,7)
-      <Remainder>
-      LOOP END
+LOOP BEGIN at nbody2.c(48,5)
+<Remainder>
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody2.c(54,7)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody2.c(54,7)
+   <Remainder>
    LOOP END
 LOOP END
 ===========================================================================

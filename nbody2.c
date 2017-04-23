@@ -35,7 +35,7 @@ struct centerOfMass computeCom(const int nBodies, struct BodyType* const bodies)
 }
 
 void MoveBodies(const int nBodies, struct BodyType* const bodies, const float dt) {
-  int i, j, chunk = 1;
+  int i, j;
 
   // Avoid singularity and interaction with self
   const float softening = 1e-20;
@@ -44,7 +44,7 @@ void MoveBodies(const int nBodies, struct BodyType* const bodies, const float dt
   // TODO Might want to move parallel dec. outside of MoveBodies...!
   #pragma omp parallel private (i, j)
   {
-    #pragma omp for schedule(dynamic, chunk) // dynamic schedule first!
+    #pragma omp for schedule(static) // static fastest!
     for (i = 0; i < nBodies; i++) { 
 
       // Components of the gravity force on body i
@@ -58,7 +58,7 @@ void MoveBodies(const int nBodies, struct BodyType* const bodies, const float dt
         const float dy = bodies[j].y - bodies[i].y;
         const float dz = bodies[j].z - bodies[i].z;
         const float drSquared  = dx*dx + dy*dy + dz*dz + softening;
-        const float drPower32  = drSquared * sqrt(drSquared);
+        const float drPower32  = drSquared * sqrtf(drSquared);
         const float invDrPower32 = 1 / drPower32;
     
         // Calculate the net force
@@ -98,7 +98,7 @@ int main(const int argc, const char** argv) {
   struct BodyType bodies[nBodies];
 
   // Initialize omp threads
-  omp_set_num_threads(4);
+  omp_set_num_threads(numThreads);
 
   // Initialize random number generator and bodies
   srand(0);
@@ -129,7 +129,7 @@ int main(const int argc, const char** argv) {
 
   // Perform benchmark
   printf("\n\033[1mNBODY Version 01\033[0m\n");
-  printf("\nPropagating %d bodies using %d thread on %s...\n\n", numThreads, nBodies, "CPU");
+  printf("\nPropagating %d bodies using %d thread on %s...\n\n", nBodies, numThreads, "CPU");
 
   double rate = 0, dRate = 0; // Benchmarking data
   const int skipSteps = 3; // Set this to a positive int to skip warm-up steps
@@ -168,15 +168,20 @@ int main(const int argc, const char** argv) {
   printf("* - warm-up, not included in average\n\n");
 
   // Compute final center of mass
-  comx = 0.0f; comy=0.0f; comz=0.0f;
-  for (int i=0; i<nBodies; i++) {
-    comx += bodies[i].x;
-    comy += bodies[i].y;
-    comz += bodies[i].z;
-  }
-  comx = comx / nBodies;
-  comy = comy / nBodies;
-  comz = comz / nBodies;
+  // comx = 0.0f; comy=0.0f; comz=0.0f;
+  // for (int i=0; i<nBodies; i++) {
+  //   comx += bodies[i].x;
+  //   comy += bodies[i].y;
+  //   comz += bodies[i].z;
+  // }
+  // comx = comx / nBodies;
+  // comy = comy / nBodies;
+  // comz = comz / nBodies;
+  
+  COM = computeCom(nBodies, bodies);
+  comx = COM.x;
+  comy = COM.y;
+  comz = COM.z;
   
   printf("Final center of mass: (%g, %g, %g)\n", comx, comy, comz);
 
