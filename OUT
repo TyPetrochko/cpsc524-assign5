@@ -1,0 +1,2 @@
+icpc -g -O0 -xHost -mkl -fno-alias -qopenmp -c -qopt-report -qopt-report-file=nbody2.o.optrpt  -o nbody2.o nbody2.c
+icpc -o nbody2 -g -O0 -xHost -mkl -fno-alias -qopenmp nbody2.o
