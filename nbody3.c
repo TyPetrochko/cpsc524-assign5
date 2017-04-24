@@ -5,11 +5,6 @@
 
 int numThreads = -1;
 
-// struct BodyType { 
-//   float x, y, z;
-//   float vx, vy, vz; 
-// };
-
 struct BodySet {
   float *x, *y, *z;
   float *vx, *vy, *vz;

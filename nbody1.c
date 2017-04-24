@@ -20,7 +20,6 @@ void MoveBodies(const int nBodies, struct BodyType* const bodies, const float dt
     float Fx = 0, Fy = 0, Fz = 0; 
       
     // Loop over bodies that exert force: vectorization expected here
-    // TODO -> Strength reduction!
     for (int j = 0; j < nBodies; j++) { 
       
       // Newton's law of universal gravity
@@ -28,7 +27,6 @@ void MoveBodies(const int nBodies, struct BodyType* const bodies, const float dt
       const float dy = bodies[j].y - bodies[i].y;
       const float dz = bodies[j].z - bodies[i].z;
       const float drSquared  = dx*dx + dy*dy + dz*dz + softening;
-      // const float drPower32  = pow(drSquared, 3.0/2.0);
       const float drPower32  = drSquared * sqrtf(drSquared);
       const float invDrPower32 = 1.0f / drPower32;
 	

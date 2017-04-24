@@ -14,14 +14,17 @@ TARGETOBJECTS1 = nbody1.o
 TARGETS2 = nbody2
 TARGETOBJECTS2 = nbody2.o
 
-TARGETS2 = nbody3
-TARGETOBJECTS2 = nbody3.o
+TARGETS3 = nbody3
+TARGETOBJECTS3 = nbody3.o
+
+TARGETS4 = nbody4
+TARGETOBJECTS4 = nbody4.o
 
 NSIZE=16384
 
 .SUFFIXES: .o .c
 
-all: $(TARGETS) $(TARGETS1) $(TARGETS2) $(TARGETS3)
+all: $(TARGETS) $(TARGETS1) $(TARGETS2) $(TARGETS3) $(TARGETS4)
 
 
 $(TARGETS): $(TARGETOBJECTS)
@@ -36,6 +39,9 @@ $(TARGETS2): $(TARGETOBJECTS2)
 $(TARGETS3): $(TARGETOBJECTS3)
 	$(CC) -o $@ $(CFLAGS) $^
 
+$(TARGETS4): $(TARGETOBJECTS4)
+	$(CC) -o $@ $(CFLAGS) $^
+
 .c.o:
 	$(CC) $(CFLAGS) -c $(OPTFLAGS) -o $@ $<
 
@@ -44,4 +50,5 @@ clean:
 	rm -f $(TARGETOBJECTS1) $(TARGETS1) *.optrpt
 	rm -f $(TARGETOBJECTS2) $(TARGETS2) *.optrpt
 	rm -f $(TARGETOBJECTS3) $(TARGETS3) *.optrpt
+	rm -f $(TARGETOBJECTS4) $(TARGETS4) *.optrpt
 

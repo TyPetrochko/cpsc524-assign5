@@ -3,25 +3,49 @@
 #include <stdlib.h>
 #include <omp.h>
 
+#define TILESIZE 4
+
 int numThreads = -1;
 
-struct BodyType { 
-  float x, y, z;
-  float vx, vy, vz; 
+struct BodySet {
+  float *x, *y, *z;
+  float *vx, *vy, *vz;
 };
 
 struct centerOfMass {
   float x, y, z;
 };
 
-struct centerOfMass computeCom(const int nBodies, struct BodyType* const bodies){
+struct BodySet createBodySet(int nBodies){
+  struct BodySet toReturn;
+
+  toReturn.x = (float *)calloc(sizeof(float), nBodies);
+  toReturn.y = (float *)calloc(sizeof(float), nBodies);
+  toReturn.z = (float *)calloc(sizeof(float), nBodies);
+  toReturn.vx = (float *)calloc(sizeof(float), nBodies);
+  toReturn.vy = (float *)calloc(sizeof(float), nBodies);
+  toReturn.vz = (float *)calloc(sizeof(float), nBodies);
+
+  return toReturn;
+}
+
+void destroyBodySet(struct BodySet bodySet){
+  free(bodySet.x);
+  free(bodySet.y);
+  free(bodySet.z);
+  free(bodySet.vx);
+  free(bodySet.vy);
+  free(bodySet.vz);
+}
+
+struct centerOfMass computeCom(const int nBodies, const struct BodySet bodySet){
   float comx = 0.0f, comy=0.0f, comz=0.0f;
   int i;
   #pragma omp parallel for private(i) reduction(+:comx, comy, comz)
   for (i=0; i<nBodies; i++) {
-    comx += bodies[i].x;
-    comy += bodies[i].y;
-    comz += bodies[i].z;
+    comx += bodySet.x[i];
+    comy += bodySet.y[i];
+    comz += bodySet.z[i];
   }
   comx = comx / nBodies;
   comy = comy / nBodies;
@@ -34,55 +58,57 @@ struct centerOfMass computeCom(const int nBodies, struct BodyType* const bodies)
   return toReturn;
 }
 
-void MoveBodies(const int nBodies, struct BodyType* const bodies, const float dt) {
-  int i, j;
+void MoveBodies(const int nBodies, const struct BodySet bodySet, const float dt) {
+  int i, j, x;
 
   // Avoid singularity and interaction with self
   const float softening = 1e-20;
 
   // Loop over bodies that experience force
-  #pragma omp parallel private (i, j)
+  #pragma omp parallel private (i, j, x)
   {
     #pragma omp for schedule(static) // static fastest!
-    for (i = 0; i < nBodies; i++) { 
+    for (i = 0; i < nBodies; i += TILESIZE) { 
 
       // Components of the gravity force on body i
-      float Fx = 0, Fy = 0, Fz = 0; 
-        
+      float Fx[TILESIZE] = {0}, Fy[TILESIZE] = {0}, Fz[TILESIZE] = {0}; 
       // Loop over bodies that exert force: vectorization expected here
+      #pragma unroll_and_jam(TILESIZE)
       for (j = 0; j < nBodies; j++) { 
-        
-        // Newton's law of universal gravity
-        const float dx = bodies[j].x - bodies[i].x;
-        const float dy = bodies[j].y - bodies[i].y;
-        const float dz = bodies[j].z - bodies[i].z;
-        const float drSquared  = dx*dx + dy*dy + dz*dz + softening;
-        const float drPower32  = drSquared * sqrtf(drSquared);
-        const float invDrPower32 = 1 / drPower32;
-    
-        // Calculate the net force
-        Fx += dx * invDrPower32;
-        Fy += dy * invDrPower32;
-        Fz += dz * invDrPower32;
+        for(x = i; x < i + TILESIZE; x++){
+          // Newton's law of universal gravity
+          const float dx = bodySet.x[j] - bodySet.x[x];
+          const float dy = bodySet.y[j] - bodySet.y[x];
+          const float dz = bodySet.z[j] - bodySet.z[x];
+          const float drSquared  = dx*dx + dy*dy + dz*dz + softening;
+          const float drPower32  = drSquared * sqrtf(drSquared);
+          const float invDrPower32 = 1 / drPower32;
+          
+          // Calculate the net force
+          Fx[x - i] += dx * invDrPower32;
+          Fy[x - i] += dy * invDrPower32;
+          Fz[x - i] += dz * invDrPower32;
+        }
       }
 
       // Accelerate bodies in response to the gravitational force
-      bodies[i].vx += dt*Fx; 
-      bodies[i].vy += dt*Fy; 
-      bodies[i].vz += dt*Fz;
+      for(x = i; x < i + TILESIZE; x++){
+        bodySet.vx[x] += dt*Fx[x - i]; 
+        bodySet.vy[x] += dt*Fy[x - i]; 
+        bodySet.vz[x] += dt*Fz[x - i];
+      }
     }
   }
 
   // Move bodies according to their velocities
   for (i = 0 ; i < nBodies; i++) { 
-    bodies[i].x  += bodies[i].vx*dt;
-    bodies[i].y  += bodies[i].vy*dt;
-    bodies[i].z  += bodies[i].vz*dt;
+    bodySet.x[i] += bodySet.vx[i]*dt;
+    bodySet.y[i] += bodySet.vy[i]*dt;
+    bodySet.z[i] += bodySet.vz[i]*dt;
   }
 }
 
 int main(const int argc, const char** argv) {
-
   const char *threadsVar = getenv("OMP_NUM_THREADS");
   numThreads = atoi(threadsVar);
 
@@ -94,7 +120,7 @@ int main(const int argc, const char** argv) {
   const float dt = 0.01f; // Body propagation time step
 
   // Body data stored as an Array of Structures (AoS)
-  struct BodyType bodies[nBodies];
+  struct BodySet bodySet = createBodySet(nBodies);
 
   // Initialize omp threads
   omp_set_num_threads(numThreads);
@@ -104,17 +130,17 @@ int main(const int argc, const char** argv) {
   float randmax;
   randmax = (float) RAND_MAX;
   for(int i = 0; i < nBodies; i++) {
-    bodies[i].x = ((float) rand())/randmax; 
-    bodies[i].y = ((float) rand())/randmax; 
-    bodies[i].z = ((float) rand())/randmax; 
-    bodies[i].vx = ((float) rand())/randmax; 
-    bodies[i].vy = ((float) rand())/randmax; 
-    bodies[i].vz = ((float) rand())/randmax; 
+    bodySet.x[i] = ((float) rand())/randmax; 
+    bodySet.y[i] = ((float) rand())/randmax; 
+    bodySet.z[i] = ((float) rand())/randmax; 
+    bodySet.vx[i] = ((float) rand())/randmax; 
+    bodySet.vy[i] = ((float) rand())/randmax; 
+    bodySet.vz[i] = ((float) rand())/randmax; 
   }
 
   // Compute initial center of mass  
   float comx = 0.0f, comy=0.0f, comz=0.0f;
-  COM = computeCom(nBodies, bodies);
+  COM = computeCom(nBodies, bodySet);
   comx = COM.x;
   comy = COM.y;
   comz = COM.z;
@@ -122,7 +148,7 @@ int main(const int argc, const char** argv) {
   printf("Initial center of mass: (%g, %g, %g)\n", comx, comy, comz);
 
   // Perform benchmark
-  printf("\n\033[1mNBODY Version 02\033[0m\n");
+  printf("\n\033[1mNBODY Version 04\033[0m\n");
   printf("\nPropagating %d bodies using %d thread on %s...\n\n", nBodies, numThreads, "CPU");
 
   double rate = 0, dRate = 0; // Benchmarking data
@@ -133,7 +159,7 @@ int main(const int argc, const char** argv) {
   for (int step = 1; step <= nSteps; step++) {
 
     const double tStart = omp_get_wtime(); // Start timing
-    MoveBodies(nBodies, bodies, dt);
+    MoveBodies(nBodies, bodySet, dt);
     const double tEnd = omp_get_wtime(); // End timing
 
     // These are for calculating flop rate. It ignores symmetry and 
@@ -162,11 +188,11 @@ int main(const int argc, const char** argv) {
   printf("* - warm-up, not included in average\n\n");
 
   // Compute final center of mass
-  COM = computeCom(nBodies, bodies);
+  COM = computeCom(nBodies, bodySet);
   comx = COM.x;
   comy = COM.y;
   comz = COM.z;
   
   printf("Final center of mass: (%g, %g, %g)\n", comx, comy, comz);
-
+  destroyBodySet(bodySet);
 }
