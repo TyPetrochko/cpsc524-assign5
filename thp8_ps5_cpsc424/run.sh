@@ -1,0 +1,28 @@
+module load Langs/Intel/15; module load Langs/Intel/15 MPI/OpenMPI/1.8.6-intel15
+
+./nbody0
+./nbody1
+OMP_NUM_THREADS=1 ./nbody2
+OMP_NUM_THREADS=2 ./nbody2
+OMP_NUM_THREADS=4 ./nbody2
+OMP_NUM_THREADS=8 ./nbody2
+OMP_NUM_THREADS=8 ./nbody2
+
+OMP_NUM_THREADS=1 ./nbody3
+OMP_NUM_THREADS=2 ./nbody3
+OMP_NUM_THREADS=4 ./nbody3
+OMP_NUM_THREADS=8 ./nbody3
+OMP_NUM_THREADS=8 ./nbody3
+
+OMP_NUM_THREADS=8 ./nbody3 2048
+OMP_NUM_THREADS=8 ./nbody3 4096
+OMP_NUM_THREADS=8 ./nbody3 8192
+OMP_NUM_THREADS=8 ./nbody3 16384
+OMP_NUM_THREADS=8 ./nbody3 32768
+
+OMP_NUM_THREADS=8 ./nbody4 2048
+OMP_NUM_THREADS=8 ./nbody4 4096
+OMP_NUM_THREADS=8 ./nbody4 8192
+OMP_NUM_THREADS=8 ./nbody4 16384
+OMP_NUM_THREADS=8 ./nbody4 32768
+

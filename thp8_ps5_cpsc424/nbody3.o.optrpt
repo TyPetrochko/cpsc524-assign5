@@ -1,0 +1,234 @@
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: 10000
+  -inline-max-per-compile: 500000
+
+
+Begin optimization report for: main(int, const char **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, const char **)) [1] nbody3.c(106,45)
+  -> INLINE: (109,16) atoi(const char *)
+     {{ Inlining of routines from system headers is omitted. Use -qopt-report=3 to view full report. }}
+  -> INLINE: (114,35) atoi(const char *)
+     {{ Inlining of routines from system headers is omitted. Use -qopt-report=3 to view full report. }}
+  -> INLINE: (119,42) createBodySet(int)
+  -> INLINE: (139,29) computeCom(int, BodySet)
+  -> INLINE: (158,5) MoveBodies(int, BodySet, float)
+  -> INLINE: (187,29) computeCom(int, BodySet)
+  -> INLINE: (193,3) destroyBodySet(BodySet)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at nbody3.c(42,3) inlined into nbody3.c(139,29)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at nbody3.c(66,3) inlined into nbody3.c(158,5)
+   remark #16201: OpenMP DEFINED REGION WAS PARALLELIZED
+OpenMP Construct at nbody3.c(42,3) inlined into nbody3.c(187,29)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at nbody3.c(128,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+   remark #15346: vector dependence: assumed OUTPUT dependence between  line 129 and  line 134
+LOOP END
+
+LOOP BEGIN at nbody3.c(155,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+
+   LOOP BEGIN at nbody3.c(99,3) inlined into nbody3.c(158,5)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+      remark #15346: vector dependence: assumed OUTPUT dependence between z line 100 and z line 102
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(139,29)
+<Peeled>
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(139,29)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(44,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(45,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(46,5) ]
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(139,29)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(139,29)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at nbody3.c(69,5) inlined into nbody3.c(158,5)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody3.c(75,7) inlined into nbody3.c(158,5)
+   <Peeled>
+   LOOP END
+
+   LOOP BEGIN at nbody3.c(75,7) inlined into nbody3.c(158,5)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody3.c(75,7) inlined into nbody3.c(158,5)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(187,29)
+<Peeled>
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(187,29)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(44,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(45,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(46,5) ]
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(187,29)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3) inlined into nbody3.c(187,29)
+<Remainder>
+LOOP END
+===========================================================================
+
+Begin optimization report for: createBodySet(int)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (createBodySet(int)) [3] nbody3.c(17,42)
+
+
+    Report from: Code generation optimizations [cg]
+
+nbody3.c(27,10):remark #34000: call to memcpy implemented inline with loads and stores with proven source (alignment, offset): (16, 0), and destination (alignment, offset): (1, 0)
+===========================================================================
+
+Begin optimization report for: destroyBodySet(BodySet)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (destroyBodySet(BodySet)) [4] nbody3.c(30,44)
+
+===========================================================================
+
+Begin optimization report for: computeCom(int, BodySet)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (computeCom(int, BodySet)) [5] nbody3.c(39,80)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at nbody3.c(42,3)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at nbody3.c(42,3)
+<Peeled>
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(44,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(45,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody3.c(46,5) ]
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at nbody3.c(42,3)
+<Remainder>
+LOOP END
+===========================================================================
+
+Begin optimization report for: MoveBodies(int, BodySet, float)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (MoveBodies(int, BodySet, float)) [6] nbody3.c(59,82)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at nbody3.c(66,3)
+   remark #16201: OpenMP DEFINED REGION WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at nbody3.c(99,3)
+<Peeled>
+LOOP END
+
+LOOP BEGIN at nbody3.c(99,3)
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody3.c(99,3)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at nbody3.c(99,3)
+<Remainder>
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody3.c(99,3)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at nbody3.c(69,5)
+   remark #25461: Imperfect Loop Unroll-Jammed by 2   (pre-vector) 
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody3.c(75,7)
+   <Peeled>
+   LOOP END
+
+   LOOP BEGIN at nbody3.c(75,7)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody3.c(75,7)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody3.c(69,5)
+<Remainder>
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody3.c(75,7)
+   <Peeled>
+   LOOP END
+
+   LOOP BEGIN at nbody3.c(75,7)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody3.c(75,7)
+   <Remainder>
+   LOOP END
+LOOP END
+===========================================================================

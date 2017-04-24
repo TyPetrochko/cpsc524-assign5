@@ -1,0 +1,186 @@
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINING OPTION VALUES:
+  -inline-factor: 100
+  -inline-min-size: 30
+  -inline-max-size: 230
+  -inline-max-total-size: 2000
+  -inline-max-per-routine: 10000
+  -inline-max-per-compile: 500000
+
+
+Begin optimization report for: main(int, const char **)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (main(int, const char **)) [1] nbody2.c(84,45)
+  -> INLINE: (87,16) atoi(const char *)
+     {{ Inlining of routines from system headers is omitted. Use -qopt-report=3 to view full report. }}
+  -> INLINE: (92,35) atoi(const char *)
+     {{ Inlining of routines from system headers is omitted. Use -qopt-report=3 to view full report. }}
+  -> INLINE: (117,29) computeCom(int, BodyType *)
+  -> INLINE: (136,5) MoveBodies(int, BodyType *, float)
+  -> INLINE: (165,29) computeCom(int, BodyType *)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at nbody2.c(20,3) inlined into nbody2.c(117,29)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+OpenMP Construct at nbody2.c(44,3) inlined into nbody2.c(136,5)
+   remark #16201: OpenMP DEFINED REGION WAS PARALLELIZED
+OpenMP Construct at nbody2.c(20,3) inlined into nbody2.c(165,29)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at nbody2.c(106,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+   remark #15346: vector dependence: assumed OUTPUT dependence between  line 107 and  line 112
+LOOP END
+
+LOOP BEGIN at nbody2.c(133,3)
+   remark #15520: loop was not vectorized: loop with early exits cannot be vectorized unless it meets search loop idiom criteria
+
+   LOOP BEGIN at nbody2.c(77,3) inlined into nbody2.c(136,5)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+      remark #15346: vector dependence: assumed OUTPUT dependence between bodies line 78 and bodies line 78
+
+      LOOP BEGIN at nbody2.c(78,5) inlined into nbody2.c(136,5)
+         remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+         remark #15346: vector dependence: assumed FLOW dependence between bodies line 78 and bodies line 78
+         remark #25436: completely unrolled by 3  
+      LOOP END
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(117,29)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(22,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(23,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(24,5) ]
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(117,29)
+<Remainder>
+LOOP END
+
+LOOP BEGIN at nbody2.c(47,5) inlined into nbody2.c(136,5)
+   remark #25461: Imperfect Loop Unroll-Jammed by 2   (pre-vector) 
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody2.c(53,7) inlined into nbody2.c(136,5)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody2.c(53,7) inlined into nbody2.c(136,5)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody2.c(47,5) inlined into nbody2.c(136,5)
+<Remainder>
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody2.c(53,7) inlined into nbody2.c(136,5)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody2.c(53,7) inlined into nbody2.c(136,5)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(165,29)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(22,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(23,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(24,5) ]
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody2.c(20,3) inlined into nbody2.c(165,29)
+<Remainder>
+LOOP END
+===========================================================================
+
+Begin optimization report for: computeCom(int, BodyType *)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (computeCom(int, BodyType *)) [3] nbody2.c(17,81)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at nbody2.c(20,3)
+   remark #16200: OpenMP DEFINED LOOP WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at nbody2.c(20,3)
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(22,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(23,5) ]
+   remark #25084: Preprocess Loopnests: Moving Out Store    [ nbody2.c(24,5) ]
+   remark #15300: LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at nbody2.c(20,3)
+<Remainder>
+LOOP END
+===========================================================================
+
+Begin optimization report for: MoveBodies(int, BodyType *, float)
+
+    Report from: Interprocedural optimizations [ipo]
+
+INLINE REPORT: (MoveBodies(int, BodyType *, float)) [4] nbody2.c(37,83)
+
+
+    Report from: OpenMP optimizations [openmp]
+
+OpenMP Construct at nbody2.c(44,3)
+   remark #16201: OpenMP DEFINED REGION WAS PARALLELIZED
+
+    Report from: Loop nest, Vector & Auto-parallelization optimizations [loop, vec, par]
+
+
+LOOP BEGIN at nbody2.c(77,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+   remark #15346: vector dependence: assumed OUTPUT dependence between bodies line 78 and bodies line 78
+
+   LOOP BEGIN at nbody2.c(78,5)
+      remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+      remark #15346: vector dependence: assumed FLOW dependence between bodies line 78 and bodies line 78
+      remark #25436: completely unrolled by 3  
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody2.c(47,5)
+   remark #25461: Imperfect Loop Unroll-Jammed by 2   (pre-vector) 
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody2.c(53,7)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody2.c(53,7)
+   <Remainder>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at nbody2.c(47,5)
+<Remainder>
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at nbody2.c(53,7)
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody2.c(53,7)
+   <Remainder>
+   LOOP END
+LOOP END
+===========================================================================
