@@ -1,2 +1,0 @@
-icpc -g -O3 -xHost -mkl -fno-alias -qopenmp -c -qopt-report -qopt-report-file=nbody3.o.optrpt  -o nbody3.o nbody3.c
-icpc -o nbody3 -g -O3 -xHost -mkl -fno-alias -qopenmp nbody3.o
