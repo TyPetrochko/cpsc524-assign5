@@ -75,26 +75,33 @@ LOOP BEGIN at nbody4.c(71,5) inlined into nbody4.c(162,5)
    remark #15542: loop was not vectorized: inner loop was already vectorized
 
    LOOP BEGIN at nbody4.c(77,7) inlined into nbody4.c(162,5)
-   <Peeled>
-   LOOP END
-
-   LOOP BEGIN at nbody4.c(77,7) inlined into nbody4.c(162,5)
-      remark #25456: Number of Array Refs Scalar Replaced In Loop: 6
-      remark #15300: LOOP WAS VECTORIZED
+      remark #25461: Imperfect Loop Unroll-Jammed by 16   (pre-vector) 
+      remark #15542: loop was not vectorized: inner loop was already vectorized
 
       LOOP BEGIN at nbody4.c(78,9) inlined into nbody4.c(162,5)
-         remark #25436: completely unrolled by 2   (pre-vector) 
+         remark #15300: LOOP WAS VECTORIZED
       LOOP END
    LOOP END
 
    LOOP BEGIN at nbody4.c(77,7) inlined into nbody4.c(162,5)
    <Remainder>
+      remark #15542: loop was not vectorized: inner loop was already vectorized
+
+      LOOP BEGIN at nbody4.c(78,9) inlined into nbody4.c(162,5)
+         remark #15300: LOOP WAS VECTORIZED
+      LOOP END
    LOOP END
 
    LOOP BEGIN at nbody4.c(95,7) inlined into nbody4.c(162,5)
-      remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
-      remark #15346: vector dependence: assumed OUTPUT dependence between vz line 96 and vz line 98
-      remark #25436: completely unrolled by 2  
+   <Multiversioned v1>
+      remark #25228: Loop multiversioned for Data Dependence
+      remark #15300: LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at nbody4.c(95,7) inlined into nbody4.c(162,5)
+   <Multiversioned v2>
+      remark #15304: loop was not vectorized: non-vectorizable loop instance from multiversioning
+      remark #25436: completely unrolled by 16  
    LOOP END
 LOOP END
 
@@ -219,25 +226,26 @@ LOOP BEGIN at nbody4.c(71,5)
    remark #15542: loop was not vectorized: inner loop was already vectorized
 
    LOOP BEGIN at nbody4.c(77,7)
-   <Peeled>
-   LOOP END
-
-   LOOP BEGIN at nbody4.c(77,7)
-      remark #25456: Number of Array Refs Scalar Replaced In Loop: 6
-      remark #15300: LOOP WAS VECTORIZED
+      remark #25461: Imperfect Loop Unroll-Jammed by 16   (pre-vector) 
+      remark #15542: loop was not vectorized: inner loop was already vectorized
 
       LOOP BEGIN at nbody4.c(78,9)
-         remark #25436: completely unrolled by 2   (pre-vector) 
+         remark #15300: LOOP WAS VECTORIZED
+         remark #25456: Number of Array Refs Scalar Replaced In Loop: 90
       LOOP END
    LOOP END
 
    LOOP BEGIN at nbody4.c(77,7)
    <Remainder>
+      remark #15542: loop was not vectorized: inner loop was already vectorized
+
+      LOOP BEGIN at nbody4.c(78,9)
+         remark #15300: LOOP WAS VECTORIZED
+      LOOP END
    LOOP END
 
    LOOP BEGIN at nbody4.c(95,7)
-      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
-      remark #25436: completely unrolled by 2  
+      remark #15300: LOOP WAS VECTORIZED
    LOOP END
 LOOP END
 

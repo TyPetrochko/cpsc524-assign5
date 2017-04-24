@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <omp.h>
 
-#define TILESIZE 2
+#define TILESIZE 16
 
 int numThreads = -1;
 
