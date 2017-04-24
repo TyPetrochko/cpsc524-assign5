@@ -79,11 +79,11 @@ LOOP BEGIN at nbody4.c(71,5) inlined into nbody4.c(162,5)
    LOOP END
 
    LOOP BEGIN at nbody4.c(77,7) inlined into nbody4.c(162,5)
-      remark #25456: Number of Array Refs Scalar Replaced In Loop: 12
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 6
       remark #15300: LOOP WAS VECTORIZED
 
       LOOP BEGIN at nbody4.c(78,9) inlined into nbody4.c(162,5)
-         remark #25436: completely unrolled by 4   (pre-vector) 
+         remark #25436: completely unrolled by 2   (pre-vector) 
       LOOP END
    LOOP END
 
@@ -94,7 +94,7 @@ LOOP BEGIN at nbody4.c(71,5) inlined into nbody4.c(162,5)
    LOOP BEGIN at nbody4.c(95,7) inlined into nbody4.c(162,5)
       remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
       remark #15346: vector dependence: assumed OUTPUT dependence between vz line 96 and vz line 98
-      remark #25436: completely unrolled by 4  
+      remark #25436: completely unrolled by 2  
    LOOP END
 LOOP END
 
@@ -223,11 +223,11 @@ LOOP BEGIN at nbody4.c(71,5)
    LOOP END
 
    LOOP BEGIN at nbody4.c(77,7)
-      remark #25456: Number of Array Refs Scalar Replaced In Loop: 12
+      remark #25456: Number of Array Refs Scalar Replaced In Loop: 6
       remark #15300: LOOP WAS VECTORIZED
 
       LOOP BEGIN at nbody4.c(78,9)
-         remark #25436: completely unrolled by 4   (pre-vector) 
+         remark #25436: completely unrolled by 2   (pre-vector) 
       LOOP END
    LOOP END
 
@@ -236,7 +236,8 @@ LOOP BEGIN at nbody4.c(71,5)
    LOOP END
 
    LOOP BEGIN at nbody4.c(95,7)
-      remark #15300: LOOP WAS VECTORIZED
+      remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #25436: completely unrolled by 2  
    LOOP END
 LOOP END
 
